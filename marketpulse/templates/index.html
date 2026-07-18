@@ -1,0 +1,678 @@
+<!doctype html>
+
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-container": "#0652f0",
+              "on-secondary-container": "#00616d",
+              "surface-bright": "#30394f",
+              "secondary-fixed": "#9cf0ff",
+              "surface-container-lowest": "#040e21",
+              surface: "#091327",
+              "secondary-fixed-dim": "#00daf3",
+              "on-surface-variant": "#b9cbbc",
+              "error-container": "#93000a",
+              "surface-container-highest": "#2b354a",
+              "on-surface": "#d9e2fe",
+              "on-tertiary": "#002780",
+              "surface-dim": "#091327",
+              "tertiary-container": "#d8deff",
+              "surface-variant": "#2b354a",
+              "on-secondary-fixed-variant": "#004f58",
+              "inverse-on-surface": "#273045",
+              "on-secondary": "#00363d",
+              "surface-tint": "#00e38d",
+              "surface-container": "#161f34",
+              "secondary-container": "#00e3fd",
+              "tertiary-fixed-dim": "#b6c4ff",
+              "on-primary": "#00391f",
+              "on-tertiary-fixed": "#001550",
+              "tertiary-fixed": "#dce1ff",
+              primary: "#f4fff4",
+              "outline-variant": "#3a4a3f",
+              error: "#ffb4ab",
+              secondary: "#bdf4ff",
+              "on-primary-container": "#007144",
+              "on-tertiary-fixed-variant": "#003ab3",
+              "primary-fixed": "#55ffa9",
+              "surface-container-high": "#202a3f",
+              "on-primary-fixed": "#002110",
+              "surface-container-low": "#121b2f",
+              "on-error-container": "#ffdad6",
+              tertiary: "#fefbff",
+              "inverse-surface": "#d9e2fe",
+              outline: "#849587",
+              "on-background": "#d9e2fe",
+              "primary-container": "#00ff9f",
+              "on-error": "#690005",
+              "primary-fixed-dim": "#00e38d",
+              "on-primary-fixed-variant": "#005230",
+              "inverse-primary": "#006d41",
+              background: "#091327",
+              "on-secondary-fixed": "#001f24",
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+            spacing: {
+              "panel-gap": "12px",
+              "container-margin": "24px",
+              gutter: "16px",
+              base: "4px",
+              "cell-padding": "8px",
+            },
+            fontFamily: {
+              "headline-md": ["Inter"],
+              "body-lg": ["Inter"],
+              "headline-lg": ["Inter"],
+              "headline-lg-mobile": ["Inter"],
+              "body-md": ["Inter"],
+              "data-mono": ["JetBrains Mono"],
+              "display-lg": ["Inter"],
+              "label-sm": ["Inter"],
+            },
+            fontSize: {
+              "headline-md": [
+                "24px",
+                { lineHeight: "32px", fontWeight: "600" },
+              ],
+              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+              "headline-lg": [
+                "32px",
+                {
+                  lineHeight: "40px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "700",
+                },
+              ],
+              "headline-lg-mobile": [
+                "24px",
+                { lineHeight: "32px", fontWeight: "700" },
+              ],
+              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+              "data-mono": ["13px", { lineHeight: "18px", fontWeight: "500" }],
+              "display-lg": [
+                "48px",
+                {
+                  lineHeight: "56px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+              "label-sm": [
+                "11px",
+                {
+                  lineHeight: "16px",
+                  letterSpacing: "0.05em",
+                  fontWeight: "600",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .glass-panel {
+        background: rgba(18, 27, 47, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .neon-glow {
+        box-shadow: 0 0 15px rgba(0, 227, 141, 0.3);
+      }
+      .neon-border {
+        border: 1px solid #00e38d;
+      }
+      .ticker-wrap {
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .ticker-move {
+        display: inline-block;
+        animation: ticker 30s linear infinite;
+      }
+      @keyframes ticker {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background text-on-surface font-body-md overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container"
+  >
+    <!-- Market Ticker -->
+    <div
+      class="w-full h-10 bg-surface-container-lowest border-b border-white/5 flex items-center z-[60] relative overflow-hidden"
+    >
+      <div class="ticker-wrap flex items-center w-full">
+        <div class="ticker-move flex gap-8 items-center px-4">
+          <div class="flex items-center gap-2">
+            <span
+              class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest"
+              >NIFTY 50</span
+            >
+            <span class="font-data-mono text-data-mono text-primary-fixed"
+              >22,453.15 (+0.85%)</span
+            >
+          </div>
+          <div class="flex items-center gap-2">
+            <span
+              class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest"
+              >SENSEX</span
+            >
+            <span class="font-data-mono text-data-mono text-primary-fixed"
+              >73,917.03 (+0.72%)</span
+            >
+          </div>
+          <div class="flex items-center gap-2">
+            <span
+              class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest"
+              >NASDAQ</span
+            >
+            <span class="font-data-mono text-data-mono text-error"
+              >16,175.45 (-0.12%)</span
+            >
+          </div>
+          <div class="flex items-center gap-2">
+            <span
+              class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest"
+              >BTC/USD</span
+            >
+            <span class="font-data-mono text-data-mono text-primary-fixed"
+              >67,432.10 (+2.44%)</span
+            >
+          </div>
+          <div class="flex items-center gap-2">
+            <span
+              class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest"
+              >RELIANCE</span
+            >
+            <span class="font-data-mono text-data-mono text-primary-fixed"
+              >2,984.00 (+1.2%)</span
+            >
+          </div>
+          <!-- Duplicate for seamless loop -->
+          <div class="flex items-center gap-2">
+            <span
+              class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest"
+              >NIFTY 50</span
+            >
+            <span class="font-data-mono text-data-mono text-primary-fixed"
+              >22,453.15 (+0.85%)</span
+            >
+          </div>
+          <div class="flex items-center gap-2">
+            <span
+              class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest"
+              >SENSEX</span
+            >
+            <span class="font-data-mono text-data-mono text-primary-fixed"
+              >73,917.03 (+0.72%)</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Top Navigation -->
+    <header
+      class="fixed top-10 w-full z-50 flex justify-between items-center px-container-margin h-16 bg-surface/80 backdrop-blur-md border-b border-white/10 shadow-sm"
+    >
+      <div class="flex items-center gap-2">
+        <span
+          class="material-symbols-outlined text-primary-fixed-dim"
+          style="font-variation-settings: &quot;FILL&quot; 1"
+          >pulse_alert</span
+        >
+        <h1
+          class="font-headline-md text-headline-md font-bold text-primary-fixed-dim tracking-tight"
+        >
+          MarketPulse AI
+        </h1>
+      </div>
+      <nav class="hidden md:flex gap-8 items-center">
+        <a
+          class="font-body-md text-body-md text-primary-fixed-dim border-b-2 border-primary-fixed-dim pb-1"
+          href="#"
+          >Dashboard</a
+        >
+        <a
+          class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors"
+          href="#"
+          >News</a
+        >
+        <a
+          class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors"
+          href="#"
+          >Watchlist</a
+        >
+        <a
+          class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors"
+          href="#"
+          >Screener</a
+        >
+        <a
+          class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors"
+          href="#"
+          >Portfolio</a
+        >
+      </nav>
+      <div class="flex items-center gap-4">
+        <button
+          class="p-2 text-on-surface-variant hover:bg-surface-container-highest/50 rounded-full transition-all active:scale-95"
+        >
+          <span class="material-symbols-outlined" data-icon="dark_mode"
+            >dark_mode</span
+          >
+        </button>
+        <button
+          class="px-4 py-2 bg-primary-container text-on-primary-container font-label-sm text-label-sm rounded-lg hover:shadow-[0_0_15px_rgba(0,227,141,0.15)] transition-all"
+        >
+          Login
+        </button>
+      </div>
+    </header>
+    <main class="pt-24 min-h-screen">
+      <!-- Hero Section -->
+      <section
+        class="relative w-full py-20 px-container-margin overflow-hidden flex flex-col items-center"
+      >
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0 opacity-20 scale-110">
+          <img
+            alt="Global Market Analytics Backdrop"
+            class="w-full h-full object-cover"
+            data-alt="A sprawling, futuristic financial command center at night with deep navy and cyan hues. Multiple translucent glass screens float in the air, displaying complex real-time stock market candlestick charts, heatmaps of the Indian and global markets, and golden glowing AI neural network connections. The atmosphere is cinematic and high-stakes, with soft bokeh lights from a metropolitan skyline reflecting on the dark metallic surfaces."
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTRLZ4w168MKd98maSXD2RAFTPqqAO2nz9a9bmusbEbrklSHOS2tsYTGRtLxzytJlI7ex7xSMNlT48b2qr5YkHsfpQ7hVuUIbgGVoHvr0FXXekKfuJJ8voADplWH4uRGa10yZ_Jq57WRADn4udLD-JlPP1gTSRqI9M5Eg2UCINt8VG8UTrn3Xse0EBHqglDzY82DxUS_2ZoN_gDre9TBVQHBcP03CX5kkKbMZNeSk_o6pdTFKY0vqDa0aPdLoNvzdVhB22O8zfn64"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background"
+          ></div>
+        </div>
+        <div class="relative z-10 text-center max-w-4xl mx-auto mt-12">
+          <div
+            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-container/10 border border-primary-fixed-dim/30 mb-8"
+          >
+            <span
+              class="material-symbols-outlined text-[16px] text-primary-fixed-dim"
+              style="font-variation-settings: &quot;FILL&quot; 1"
+              >auto_awesome</span
+            >
+            <span
+              class="font-label-sm text-label-sm text-primary-fixed-dim tracking-widest uppercase"
+              >Institutional Grade AI Analysis</span
+            >
+          </div>
+          <h2
+            class="font-display-lg text-display-lg text-on-surface mb-6 leading-tight"
+          >
+            Real-Time Market Intelligence <br />
+            <span
+              class="text-transparent bg-clip-text bg-gradient-to-r from-primary-fixed-dim to-secondary-container"
+              >Powered by AI</span
+            >
+          </h2>
+          <p
+            class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10"
+          >
+            Harness the power of high-density quantitative data and predictive
+            neural networks. Analyze Indian and global markets with millisecond
+            precision.
+          </p>
+          <div
+            class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20"
+          >
+            <button
+              class="px-8 py-4 bg-primary-container text-on-primary-container font-headline-md text-headline-md rounded-xl neon-glow hover:scale-105 transition-transform active:scale-95 flex items-center gap-2"
+            >
+              Get Started Free
+              <span class="material-symbols-outlined">trending_up</span>
+            </button>
+            <button
+              class="px-8 py-4 bg-transparent border border-white/10 text-on-surface font-headline-md text-headline-md rounded-xl hover:bg-white/5 transition-all"
+            >
+              View Demo Dashboard
+            </button>
+          </div>
+          <!-- Trust Signals -->
+          <div
+            class="flex flex-col items-center gap-8 border-t border-white/5 pt-16"
+          >
+            <p
+              class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-[0.2em]"
+            >
+              Institutional Partners &amp; Technology
+            </p>
+            <div
+              class="flex flex-wrap justify-center items-center gap-12 opacity-50 grayscale hover:grayscale-0 transition-all"
+            >
+              <div class="flex items-center gap-2">
+                <span
+                  class="font-headline-md text-headline-md text-on-surface font-bold"
+                  >NSE</span
+                >
+              </div>
+              <div class="flex items-center gap-2">
+                <span
+                  class="font-headline-md text-headline-md text-on-surface font-bold"
+                  >BSE</span
+                >
+              </div>
+              <div class="flex items-center gap-2">
+                <span
+                  class="font-headline-md text-headline-md text-on-surface font-bold"
+                  >CoinGecko</span
+                >
+              </div>
+              <div
+                class="flex items-center gap-2 border-l border-white/20 pl-12"
+              >
+                <span class="material-symbols-outlined text-primary-fixed"
+                  >cognition</span
+                >
+                <span class="font-body-md text-body-md text-on-surface italic"
+                  >Built with Claude AI</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Bento Grid Dashboard Preview -->
+      <section class="max-w-[1440px] mx-auto px-container-margin py-24">
+        <div class="grid grid-cols-12 gap-panel-gap">
+          <!-- Left: Market Overview Chart (Wide) -->
+          <div
+            class="col-span-12 lg:col-span-8 glass-panel rounded-xl p-6 flex flex-col gap-6"
+          >
+            <div class="flex justify-between items-center">
+              <div class="flex flex-col">
+                <h3 class="font-headline-md text-headline-md text-on-surface">
+                  Predictive Index Tracking
+                </h3>
+                <span
+                  class="font-label-sm text-label-sm text-on-surface-variant"
+                  >AI Projection vs Historical Data</span
+                >
+              </div>
+              <div class="flex gap-2">
+                <button
+                  class="px-3 py-1 bg-surface-container-highest rounded-lg font-label-sm text-label-sm"
+                >
+                  1D
+                </button>
+                <button
+                  class="px-3 py-1 bg-primary-container text-on-primary-container rounded-lg font-label-sm text-label-sm"
+                >
+                  1W
+                </button>
+                <button
+                  class="px-3 py-1 bg-surface-container-highest rounded-lg font-label-sm text-label-sm"
+                >
+                  1M
+                </button>
+              </div>
+            </div>
+            <div class="h-64 w-full relative">
+              <img
+                alt="Advanced Candlestick Chart with AI Overlays"
+                class="w-full h-full object-cover rounded-lg"
+                data-alt="A clean, dark-mode financial candlestick chart featuring electric green bullish candles and soft grey bearish ones. A luminous cyan dashed line represents an AI-predicted price trend, extending into the future with a soft outer glow. The interface includes minimal grid lines, high-contrast black tooltips, and small glowing icons indicating institutional buy signals."
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8sqWkZVMcZafrb-GNovGy1Z-Lz85NMXIGzUqTK86iOjUxSWhU4yFojgSSaRauecf67M82_GXSX5QZh9cEo8jX70YUaysKzSyRraDxrRD743OY7ZacSIrTe_3jyrKKaSKdG1SpXGdOIzZdqiiF-CDi1LGHqeFbSQurVwcgyvjdOm-OK0_RmOIA91AfGmU-kgOdz8P09AblZ1WkNcY4qqKCdvMumEV3sdA8DzITHC-uGf6qpjTxNM8jBRRoUYACjqXSgubWEsob8Ro"
+              />
+            </div>
+            <div class="grid grid-cols-3 gap-4 pt-4 border-t border-white/5">
+              <div class="flex flex-col">
+                <span
+                  class="font-label-sm text-label-sm text-on-surface-variant"
+                  >Predicted High</span
+                >
+                <span class="font-data-mono text-headline-md text-primary-fixed"
+                  >22,640.50</span
+                >
+              </div>
+              <div class="flex flex-col">
+                <span
+                  class="font-label-sm text-label-sm text-on-surface-variant"
+                  >Confidence</span
+                >
+                <span
+                  class="font-data-mono text-headline-md text-secondary-fixed"
+                  >94.2%</span
+                >
+              </div>
+              <div class="flex flex-col">
+                <span
+                  class="font-label-sm text-label-sm text-on-surface-variant"
+                  >Signal Strength</span
+                >
+                <div class="flex gap-1 items-center h-full">
+                  <div
+                    class="h-2 w-full bg-primary-container rounded-full"
+                  ></div>
+                  <div
+                    class="h-2 w-full bg-primary-container rounded-full"
+                  ></div>
+                  <div
+                    class="h-2 w-full bg-primary-container/20 rounded-full"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Right: Sentiment Cards (Compact Stack) -->
+          <div class="col-span-12 lg:col-span-4 flex flex-col gap-panel-gap">
+            <!-- Sentiment Card 1 -->
+            <div
+              class="glass-panel rounded-xl p-6 relative overflow-hidden group"
+            >
+              <div class="absolute top-0 right-0 p-4">
+                <span
+                  class="material-symbols-outlined text-primary-fixed-dim"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >trending_up</span
+                >
+              </div>
+              <h4
+                class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-2"
+              >
+                Market Sentiment
+              </h4>
+              <div class="flex items-baseline gap-2 mb-4">
+                <span
+                  class="font-headline-lg text-headline-lg text-primary-fixed-dim"
+                  >Extremely Bullish</span
+                >
+              </div>
+              <p class="font-body-md text-body-md text-on-surface-variant mb-4">
+                Strong institutional accumulation detected in IT and Banking
+                sectors.
+              </p>
+              <div
+                class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden"
+              >
+                <div class="h-full bg-primary-container w-[82%]"></div>
+              </div>
+            </div>
+            <!-- Sentiment Card 2 -->
+            <div
+              class="glass-panel rounded-xl p-6 border-l-4 border-secondary-fixed"
+            >
+              <h4
+                class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-2"
+              >
+                Social Pulse (X/Telegram)
+              </h4>
+              <div class="flex items-center gap-3">
+                <div class="p-2 bg-secondary-container/10 rounded-lg">
+                  <span class="material-symbols-outlined text-secondary-fixed"
+                    >forum</span
+                  >
+                </div>
+                <div>
+                  <span class="font-data-mono text-body-lg text-secondary-fixed"
+                    >+14.2k mentions</span
+                  >
+                  <p
+                    class="font-label-sm text-label-sm text-on-surface-variant"
+                  >
+                    Keyword: #NiftyBreakout
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- Sentiment Card 3 -->
+            <div
+              class="bg-primary-container rounded-xl p-6 text-on-primary-container shadow-[0_0_20px_rgba(0,255,159,0.2)]"
+            >
+              <div class="flex justify-between items-start mb-4">
+                <span class="font-label-sm text-label-sm uppercase font-bold"
+                  >Pro Signal Alert</span
+                >
+                <span class="material-symbols-outlined">priority_high</span>
+              </div>
+              <p class="font-headline-md text-headline-md font-bold mb-1">
+                Reliance Industries (RELIANCE)
+              </p>
+              <p
+                class="font-body-md text-body-md mb-4 opacity-90 text-on-primary-container"
+              >
+                Breakout confirmed on 4H chart. Target: 3,120.00
+              </p>
+              <button
+                class="w-full py-2 bg-on-primary-container text-primary-container font-label-sm text-label-sm rounded-lg font-bold"
+              >
+                Trade Now
+              </button>
+            </div>
+          </div>
+          <!-- Bottom Row: Features Bento -->
+          <div class="col-span-12 md:col-span-4 glass-panel rounded-xl p-6">
+            <span
+              class="material-symbols-outlined text-secondary-fixed text-4xl mb-4"
+              >filter_alt</span
+            >
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-2">
+              Smart Screeners
+            </h3>
+            <p class="font-body-md text-body-md text-on-surface-variant">
+              Filter 50,000+ stocks globally with customizable AI triggers and
+              quantitative parameters.
+            </p>
+          </div>
+          <div class="col-span-12 md:col-span-4 glass-panel rounded-xl p-6">
+            <span
+              class="material-symbols-outlined text-primary-fixed-dim text-4xl mb-4"
+              >notifications_active</span
+            >
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-2">
+              Neural Alerts
+            </h3>
+            <p class="font-body-md text-body-md text-on-surface-variant">
+              Get notified of anomalies before they become news. Advanced
+              volatility and volume spike detection.
+            </p>
+          </div>
+          <div class="col-span-12 md:col-span-4 glass-panel rounded-xl p-6">
+            <span
+              class="material-symbols-outlined text-on-tertiary-container text-4xl mb-4"
+              >pie_chart</span
+            >
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-2">
+              Risk Management
+            </h3>
+            <p class="font-body-md text-body-md text-on-surface-variant">
+              Automated portfolio rebalancing and correlation analysis to
+              protect your capital.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- Footer -->
+    <footer
+      class="w-full py-8 px-container-margin flex flex-col md:flex-row justify-between items-center gap-panel-gap bg-surface-container-lowest border-t border-white/5"
+    >
+      <div class="flex flex-col gap-2">
+        <h2
+          class="font-headline-lg text-headline-lg text-primary-fixed-dim font-bold"
+        >
+          MarketPulse AI
+        </h2>
+        <p
+          class="font-label-sm text-label-sm text-on-surface-variant opacity-80"
+        >
+          © 2024 MarketPulse AI. Data by NSE, BSE, and CoinGecko.
+        </p>
+      </div>
+      <div class="flex gap-8">
+        <a
+          class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors"
+          href="#"
+          >Privacy Policy</a
+        >
+        <a
+          class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors"
+          href="#"
+          >Terms of Service</a
+        >
+        <a
+          class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors"
+          href="#"
+          >API Documentation</a
+        >
+        <a
+          class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors"
+          href="#"
+          >Contact Us</a
+        >
+      </div>
+      <div class="flex gap-4">
+        <button
+          class="p-2 glass-panel rounded-lg hover:text-primary-fixed transition-colors"
+        >
+          <span class="material-symbols-outlined">public</span>
+        </button>
+        <button
+          class="p-2 glass-panel rounded-lg hover:text-primary-fixed transition-colors"
+        >
+          <span class="material-symbols-outlined">alternate_email</span>
+        </button>
+      </div>
+    </footer>
+  </body>
+</html>
